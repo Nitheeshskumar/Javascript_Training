@@ -1,9 +1,10 @@
 (function () {
 
     function Movie(){
-        var searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('input',function(event){
-            var searchText = event.target.value;
+        debugger
+        var searchBtn = document.getElementById('searchbtn');
+        searchBtn.addEventListener('click',function(event){
+            var searchText = document.getElementById('searchtext').value
             var availableMoviesRaw = localStorage.getItem('popular-movies');
             if(availableMoviesRaw){
                 var availableMovies = JSON.parse(availableMoviesRaw).results;
