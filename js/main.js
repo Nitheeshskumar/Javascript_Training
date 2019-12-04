@@ -21,21 +21,35 @@
     }
 
     Movie.prototype.loadPopularMovies = function(){
-        const xhr = new XMLHttpRequest(),
+       const xhr = new XMLHttpRequest();
         method = "GET",
         url = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=06dcefc4c6268cb53b82f76560368636";
-
-        xhr.open(method, url, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                // console.log(xhr.responseText);
-                var rawResponseData = xhr.responseText;
-                localStorage.setItem('popular-movies',rawResponseData);
-                var jsonData = JSON.parse(rawResponseData);
-                this.movieListing(jsonData.results);
-            }
-        }.bind(this);
-        xhr.send();
+        // Return it as a Promise
+        return new Promise(function (resolve, reject) {
+    
+            xhr.onreadystatechange = function () {
+    
+                // Process the response
+                if (xhr.status = 200 ) {
+                    // If successful
+                    resolve(xhr);
+                } else {
+                    // If failed
+                    reject({
+                        status: xhr.status,
+                        statusText: xhr.statusText
+                    });
+                }
+    
+            };
+    
+            // Setup our HTTP request
+            xhr.open(method, url, true);
+    
+            // Send the request
+            request.send();
+    
+        });
     } 
 
     Movie.prototype.movieListing = function(movies){
@@ -70,5 +84,9 @@
 
     var movieInstance = new Movie();
     movieInstance.loadPopularMovies();
+     movieInstance.loadPopularMovies(function (results){
+        console.log(results)
+        //implement using promise.
+    });
 
 })();
